@@ -75,7 +75,7 @@ export function WeekCalender({ activities }: WeekCalenderProps) {
                     Number.isFinite(startMinute) &&
                     Number.isFinite(stopMinute) &&
                     startMinute >= 0 &&
-                    stopMinute <= 1440 &&
+                    stopMinute <= 24*60 &&
                     stopMinute > startMinute,
                 )
                 .map((activity, index) => (

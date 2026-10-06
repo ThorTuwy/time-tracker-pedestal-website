@@ -4,18 +4,24 @@ import './ActivitySummary.css'
 interface ActivitySummaryRow {
   id: number
   name: string
-  thisWeek: string
-  thisMonth: string
+  thisWeekMinutes: number
+  thisMonthMinutes: number
 }
 
 const initialActivities: ActivitySummaryRow[] = [
-  { id: 1, name: 'Focus time', thisWeek: '7h 30m', thisMonth: '28h 15m' },
-  { id: 2, name: 'Team sync', thisWeek: '2h 30m', thisMonth: '9h 00m' },
-  { id: 3, name: 'Project planning', thisWeek: '4h 00m', thisMonth: '12h 30m' },
-  { id: 4, name: 'Design review', thisWeek: '1h 00m', thisMonth: '5h 30m' },
-  { id: 5, name: 'Research', thisWeek: '1h 00m', thisMonth: '6h 00m' },
-  { id: 6, name: 'Personal project', thisWeek: '1h 30m', thisMonth: '4h 30m' },
+  { id: 1, name: 'Focus time', thisWeekMinutes: 450, thisMonthMinutes: 1695 },
+  { id: 2, name: 'Team sync', thisWeekMinutes: 150, thisMonthMinutes: 540 },
+  { id: 3, name: 'Project planning', thisWeekMinutes: 240, thisMonthMinutes: 750 },
+  { id: 4, name: 'Design review', thisWeekMinutes: 60, thisMonthMinutes: 330 },
+  { id: 5, name: 'Research', thisWeekMinutes: 60, thisMonthMinutes: 360 },
+  { id: 6, name: 'Personal project', thisWeekMinutes: 90, thisMonthMinutes: 270 },
 ]
+
+function formatDuration(minutes: number) {
+  const hours = Math.floor(minutes / 60)
+  const remainingMinutes = minutes % 60
+  return `${hours}h ${String(remainingMinutes).padStart(2, '0')}m`
+}
 
 export function ActivitySummary() {
   const [activities, setActivities] = useState(initialActivities)
@@ -53,8 +59,8 @@ export function ActivitySummary() {
                     value={activity.name}
                   />
                 </td>
-                <td>{activity.thisWeek}</td>
-                <td>{activity.thisMonth}</td>
+                <td>{formatDuration(activity.thisWeekMinutes)}</td>
+                <td>{formatDuration(activity.thisMonthMinutes)}</td>
               </tr>
             ))}
           </tbody>

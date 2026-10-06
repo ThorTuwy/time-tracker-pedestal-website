@@ -1,34 +1,5 @@
 import './WeekCalender.css'
-
-export type WeekDay =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday'
-
-export interface ActivityInterval {
-  weekDay: WeekDay
-  startMinute: number
-  stopMinute: number
-  activityName: string
-}
-
-interface WeekCalenderProps {
-  activities: ActivityInterval[]
-}
-
-const weekDays: WeekDay[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-]
+import {type ActivityTrackRecord, WEEK_DAYS, type WeekDay} from "../types/activity.ts";
 
 const hours = Array.from({ length: 24 }, (_, hour) => hour)
 const hourHeight = 56
@@ -40,13 +11,13 @@ function formatTime(minutes: number)  {
   return `${String(formattedHour).padStart(2, '0')}:${String(formattedMinute).padStart(2, '0')}`
 }
 
-export function WeekCalender({ activities }: WeekCalenderProps) {
+export function WeekCalender({ activities }: { activities: ActivityTrackRecord[] }) {
   return (
     <section class="week-calendar" aria-label="Weekly calendar">
       <div class="week-calendar__scroll">
         <div class="week-calendar__header" aria-hidden="true">
           <div class="week-calendar__corner"></div>
-          {weekDays.map((weekDay) => (
+          {WEEK_DAYS.map((weekDay:WeekDay) => (
             <div class="week-calendar__day-heading" key={weekDay}>
               {weekDay}
             </div>
@@ -63,7 +34,7 @@ export function WeekCalender({ activities }: WeekCalenderProps) {
             ))}
           </div>
 
-          {weekDays.map((weekDay) => (
+          {WEEK_DAYS.map((weekDay:WeekDay) => (
             <div class="week-calendar__day" key={weekDay}>
               {hours.map((hour) => (
                 <div class="week-calendar__hour" key={hour} />
@@ -86,6 +57,7 @@ export function WeekCalender({ activities }: WeekCalenderProps) {
                     style={{
                       top: `${(activity.startMinute / 60) * hourHeight}px`,
                       height: `${((activity.stopMinute - activity.startMinute) / 60) * hourHeight}px`,
+                      '--event-accent': activity.color,
                     }}
                     aria-label={`${activity.activityName}, ${weekDay}, ${formatTime(activity.startMinute)} to ${formatTime(activity.stopMinute)}`}
                   >

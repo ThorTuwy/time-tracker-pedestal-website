@@ -1,20 +1,26 @@
 import { useState } from 'preact/hooks'
+import Compact from '@uiw/react-color-compact'
 import './ActivitySummary.css'
+import type {ActivityRegister} from "../types/activity.ts";
 
-interface ActivitySummaryRow {
-  id: number
-  name: string
-  thisWeekMinutes: number
-  thisMonthMinutes: number
-}
+const activityColors = [
+  '#56d879',
+  '#d69d55',
+  '#76a7ff',
+  '#d6c35b',
+  '#ef8295',
+  '#59d8cf',
+  '#bd91f5',
+  '#f27777',
+]
 
-const initialActivities: ActivitySummaryRow[] = [
-  { id: 1, name: 'Focus time', thisWeekMinutes: 450, thisMonthMinutes: 1695 },
-  { id: 2, name: 'Team sync', thisWeekMinutes: 150, thisMonthMinutes: 540 },
-  { id: 3, name: 'Project planning', thisWeekMinutes: 240, thisMonthMinutes: 750 },
-  { id: 4, name: 'Design review', thisWeekMinutes: 60, thisMonthMinutes: 330 },
-  { id: 5, name: 'Research', thisWeekMinutes: 60, thisMonthMinutes: 360 },
-  { id: 6, name: 'Personal project', thisWeekMinutes: 90, thisMonthMinutes: 270 },
+const initialActivities: ActivityRegister[] = [
+  { id: 1, name: 'Focus time', color: activityColors[0], thisWeekMinutes: 450, thisMonthMinutes: 1695 },
+  { id: 2, name: 'Team sync', color: activityColors[1], thisWeekMinutes: 150, thisMonthMinutes: 540 },
+  { id: 3, name: 'Project planning', color: activityColors[2], thisWeekMinutes: 240, thisMonthMinutes: 750 },
+  { id: 4, name: 'Design review', color: activityColors[3], thisWeekMinutes: 60, thisMonthMinutes: 330 },
+  { id: 5, name: 'Research', color: activityColors[4], thisWeekMinutes: 60, thisMonthMinutes: 360 },
+  { id: 6, name: 'Personal project', color: activityColors[5], thisWeekMinutes: 90, thisMonthMinutes: 270 },
 ]
 
 function formatDuration(minutes: number) {
@@ -25,11 +31,20 @@ function formatDuration(minutes: number) {
 
 export function ActivitySummary() {
   const [activities, setActivities] = useState(initialActivities)
+  const [openColorPickerId, setOpenColorPickerId] = useState<number | null>(null)
 
   function updateActivityName(id: number, name: string) {
     setActivities((currentActivities) =>
       currentActivities.map((activity) =>
         activity.id === id ? { ...activity, name } : activity,
+      ),
+    )
+  }
+
+  function updateActivityColor(id: number, color: string) {
+    setActivities((currentActivities) =>
+      currentActivities.map((activity) =>
+        activity.id === id ? { ...activity, color } : activity,
       ),
     )
   }
@@ -52,12 +67,35 @@ export function ActivitySummary() {
             {activities.map((activity) => (
               <tr key={activity.id}>
                 <td>
-                  <input
-                    aria-label={`Activity name: ${activity.name || 'unnamed'}`}
-                    class="activity-summary__name"
-                    onInput={(event) => updateActivityName(activity.id, event.currentTarget.value)}
-                    value={activity.name}
-                  />
+                  <div class="activity-summary__activity">
+                    <div class="activity-summary__activity-details">
+                      <button
+                        aria-label={`Choose color for ${activity.name || 'unnamed'}`}
+                        aria-expanded={openColorPickerId === activity.id}
+                        class="activity-summary__color"
+                        onClick={() => setOpenColorPickerId(
+                          openColorPickerId === activity.id ? null : activity.id,
+                        )}
+                        style={{ backgroundColor: activity.color }}
+                        type="button"
+                      />
+                      <input
+                        aria-label={`Activity name: ${activity.name || 'unnamed'}`}
+                        class="activity-summary__name"
+                        onInput={(event) => updateActivityName(activity.id, event.currentTarget.value)}
+                        value={activity.name}
+                      />
+                    </div>
+                    {openColorPickerId === activity.id && (
+                        <Compact
+                            aria-label={`Choose color for ${activity.name || 'unnamed'}`}
+                            className="activity-summary__palette"
+                            color={activity.color}
+                            onChange={(color) => updateActivityColor(activity.id, color.hex)}
+                            style={{boxSizing: 'content-box'}}
+                        />
+                    )}
+                  </div>
                 </td>
                 <td>{formatDuration(activity.thisWeekMinutes)}</td>
                 <td>{formatDuration(activity.thisMonthMinutes)}</td>

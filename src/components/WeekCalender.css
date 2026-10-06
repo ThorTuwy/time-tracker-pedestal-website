@@ -90,46 +90,11 @@
   border: 1px solid var(--event-accent);
   border-left-width: 3px;
   border-radius: 0;
-  background: var(--event-bg);
+  background: color-mix(in srgb, var(--event-accent) 18%, #0c0c0c);
   color: #e6e6e6;
   font-size: 10px;
   line-height: 1.35;
   text-align: left;
-}
-
-.week-calendar__event[data-day='Monday'] {
-  --event-accent: #56d879;
-  --event-bg: #102719;
-}
-
-.week-calendar__event[data-day='Tuesday'] {
-  --event-accent: #d69d55;
-  --event-bg: #281d10;
-}
-
-.week-calendar__event[data-day='Wednesday'] {
-  --event-accent: #76a7ff;
-  --event-bg: #111d30;
-}
-
-.week-calendar__event[data-day='Thursday'] {
-  --event-accent: #d6c35b;
-  --event-bg: #27230f;
-}
-
-.week-calendar__event[data-day='Friday'] {
-  --event-accent: #ef8295;
-  --event-bg: #2a141a;
-}
-
-.week-calendar__event[data-day='Saturday'] {
-  --event-accent: #59d8cf;
-  --event-bg: #102523;
-}
-
-.week-calendar__event[data-day='Sunday'] {
-  --event-accent: #bd91f5;
-  --event-bg: #21182e;
 }
 
 .week-calendar__event-title,

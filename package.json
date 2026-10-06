@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uiw/react-color-compact": "^2.10.3",
     "preact": "^10.29.8"
   },
   "devDependencies": {

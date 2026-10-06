@@ -9,8 +9,33 @@
   padding: 24px;
 }
 
+.page-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.page-header img {
+  display: block;
+  width: min(100%, 980px);
+  height: auto;
+}
+
+.schedule-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
 @media (max-width: 700px) {
   .schedule-page {
     padding: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .schedule-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -1,4 +1,5 @@
 import { WeekCalender, type ActivityInterval } from './components/WeekCalender'
+import { ActivitySummary } from './components/ActivitySummary'
 import './app.css'
 
 const activities: ActivityInterval[] = [
@@ -22,7 +23,13 @@ const activities: ActivityInterval[] = [
 export function App() {
   return (
     <main class="schedule-page">
-      <WeekCalender activities={activities} />
+      <header class="page-header">
+        <img src="/logo-time-tracker-pedestal.svg" alt="Time tracker pedestal" />
+      </header>
+      <div class="schedule-layout">
+        <WeekCalender activities={activities} />
+        <ActivitySummary />
+      </div>
     </main>
   )
 }

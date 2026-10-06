@@ -16,12 +16,9 @@ export const WEEK_DAYS = [
     'Sunday',
 ] as const;
 
-export type WeekDay = typeof WEEK_DAYS[number];
-
 export interface ActivityTrackRecord {
-    weekDay: WeekDay
-    startMinute: number
-    stopMinute: number
+    startTime: Date
+    stopTime: Date
     activityName: string
     color: string
 }

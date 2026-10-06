@@ -1,14 +1,18 @@
 import './WeekCalender.css'
-import {type ActivityTrackRecord, WEEK_DAYS, type WeekDay} from "../types/activity.ts";
+import { type ActivityTrackRecord, WEEK_DAYS } from '../types/activity.ts'
 
 const hours = Array.from({ length: 24 }, (_, hour) => hour)
 const hourHeight = 56
 
-function formatTime(minutes: number)  {
-  const formattedHour = Math.floor(minutes / 60)
-  const formattedMinute = minutes % 60
+function formatTime(date: Date): string {
+  const formattedHour = String(date.getHours()).padStart(2, '0')
+  const formattedMinute = String(date.getMinutes()).padStart(2, '0')
 
-  return `${String(formattedHour).padStart(2, '0')}:${String(formattedMinute).padStart(2, '0')}`
+  return `${formattedHour}:${formattedMinute}`
+}
+
+function minutesSinceMidnight(date: Date): number {
+  return date.getHours() * 60 + date.getMinutes()
 }
 
 export function WeekCalender({ activities }: { activities: ActivityTrackRecord[] }) {
@@ -17,7 +21,7 @@ export function WeekCalender({ activities }: { activities: ActivityTrackRecord[]
       <div class="week-calendar__scroll">
         <div class="week-calendar__header" aria-hidden="true">
           <div class="week-calendar__corner"></div>
-          {WEEK_DAYS.map((weekDay:WeekDay) => (
+          {WEEK_DAYS.map((weekDay) => (
             <div class="week-calendar__day-heading" key={weekDay}>
               {weekDay}
             </div>
@@ -29,44 +33,40 @@ export function WeekCalender({ activities }: { activities: ActivityTrackRecord[]
             <div class="week-calendar__time" key="00:00"/>
             {hours.slice(1).map((hour) => (
               <div class="week-calendar__time" key={hour}>
-                {formatTime(hour * 60)}
+                {`${String(hour).padStart(2, '0')}:00`}
               </div>
             ))}
           </div>
 
-          {WEEK_DAYS.map((weekDay:WeekDay) => (
+          {WEEK_DAYS.map((weekDay, iWeekDay) => (
             <div class="week-calendar__day" key={weekDay}>
               {hours.map((hour) => (
                 <div class="week-calendar__hour" key={hour} />
               ))}
               {activities
                 .filter(
-                  ({ weekDay: activityDay, startMinute, stopMinute }) =>
-                    activityDay === weekDay &&
-                    Number.isFinite(startMinute) &&
-                    Number.isFinite(stopMinute) &&
-                    startMinute >= 0 &&
-                    stopMinute <= 24*60 &&
-                    stopMinute > startMinute,
+                  ({ startTime, stopTime }) =>
+                    (startTime.getDay() + 6) % 7 === iWeekDay &&
+                    minutesSinceMidnight(stopTime) > minutesSinceMidnight(startTime),
                 )
                 .map((activity, index) => (
                   <article
                     class="week-calendar__event"
                     data-day={weekDay}
-                    key={`${activity.activityName}-${activity.startMinute}-${index}`}
+                    key={`${activity.activityName}-${activity.startTime}-${index}`}
                     style={{
-                      top: `${(activity.startMinute / 60) * hourHeight}px`,
-                      height: `${((activity.stopMinute - activity.startMinute) / 60) * hourHeight}px`,
+                      top: `${(minutesSinceMidnight(activity.startTime) / 60) * hourHeight}px`,
+                      height: `${((minutesSinceMidnight(activity.stopTime) - minutesSinceMidnight(activity.startTime)) / 60) * hourHeight}px`,
                       '--event-accent': activity.color,
                     }}
-                    aria-label={`${activity.activityName}, ${weekDay}, ${formatTime(activity.startMinute)} to ${formatTime(activity.stopMinute)}`}
+                    aria-label={`${activity.activityName}, ${weekDay}, ${formatTime(activity.startTime)} to ${formatTime(activity.stopTime)}`}
                   >
                     <span class="week-calendar__event-title">
                       {activity.activityName}
                     </span>
-                    {activity.stopMinute - activity.startMinute >= 60 && (
+                    {minutesSinceMidnight(activity.stopTime) - minutesSinceMidnight(activity.startTime) >= 60 && (
                       <span class="week-calendar__event-time">
-                        {formatTime(activity.startMinute)} – {formatTime(activity.stopMinute)}
+                        {formatTime(activity.startTime)} – {formatTime(activity.stopTime)}
                       </span>
                     )}
                   </article>

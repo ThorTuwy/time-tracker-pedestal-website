@@ -113,6 +113,39 @@
   color: #e6e6e6 !important;
 }
 
+.activity-summary__actions {
+  display: flex;
+  min-height: 56px;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  border-top: 1px solid #282828;
+}
+
+.activity-summary__save-error {
+  color: #ef8295;
+  font-size: 12px;
+}
+
+.activity-summary__save {
+  padding: 8px 14px;
+  border: 1px solid #383838;
+  background: #e6e6e6;
+  color: #07100a;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.activity-summary__save:disabled {
+  border-color: #383838;
+  background: #222;
+  color: #777;
+  cursor: not-allowed;
+}
+
 @media (max-width: 640px) {
   .activity-summary__table {
     min-width: 430px;

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'preact/hooks'
 import Compact from '@uiw/react-color-compact'
 import './ActivitySummary.css'
 import type { ActivityRegister } from '../types/activity.ts'
+import {serializeActivityNameRecords} from "../utils/serializer.ts";
 
 const activityColors = [
   '#56d879',
@@ -42,6 +43,9 @@ export function ActivitySummary({
 }) {
   const [activities, setActivities] = useState(initialActivities)
   const [openColorPickerId, setOpenColorPickerId] = useState<number | null>(null)
+  const [isDirty, setIsDirty] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
     if (activityRegisters.length > 0) {
@@ -57,6 +61,8 @@ export function ActivitySummary({
       ),
     )
     onActivityChange(id, previousName, { name })
+    setIsDirty(true)
+    setSaveError(null)
   }
 
   function updateActivityColor(id: number, color: string) {
@@ -67,6 +73,30 @@ export function ActivitySummary({
       ),
     )
     onActivityChange(id, previousName, { color })
+    setIsDirty(true)
+    setSaveError(null)
+  }
+
+  async function saveActivities() {
+    setIsSaving(true)
+    setSaveError(null)
+    setOpenColorPickerId(null)
+
+    try {
+      const response = await fetch(`${import.meta.env.BASE_URL}replaceRegister`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: serializeActivityNameRecords(activities),
+      })
+      if (!response.ok) {
+        throw new Error(`Save failed: ${response.status}`)
+      }
+      setIsDirty(false)
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : 'Failed to save activities')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -93,6 +123,7 @@ export function ActivitySummary({
                         aria-label={`Choose color for ${activity.name || 'unnamed'}`}
                         aria-expanded={openColorPickerId === activity.id}
                         class="activity-summary__color"
+                        disabled={isSaving}
                         onClick={() => setOpenColorPickerId(
                           openColorPickerId === activity.id ? null : activity.id,
                         )}
@@ -102,6 +133,7 @@ export function ActivitySummary({
                       <input
                         aria-label={`Activity name: ${activity.name || 'unnamed'}`}
                         class="activity-summary__name"
+                        disabled={isSaving}
                         onInput={(event) => updateActivityName(activity.id, event.currentTarget.value)}
                         value={activity.name}
                       />
@@ -123,6 +155,17 @@ export function ActivitySummary({
             ))}
           </tbody>
         </table>
+      </div>
+      <div class="activity-summary__actions">
+        {saveError && <span class="activity-summary__save-error" role="alert">{saveError}</span>}
+        <button
+          class="activity-summary__save"
+          disabled={!isDirty || isSaving}
+          onClick={saveActivities}
+          type="button"
+        >
+          {isSaving ? 'Saving...' : 'Save'}
+        </button>
       </div>
     </section>
   )

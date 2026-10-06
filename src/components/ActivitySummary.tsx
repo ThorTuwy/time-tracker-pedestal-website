@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import Compact from '@uiw/react-color-compact'
 import './ActivitySummary.css'
-import type {ActivityRegister} from "../types/activity.ts";
+import type { ActivityRegister } from '../types/activity.ts'
 
 const activityColors = [
   '#56d879',
@@ -29,24 +29,44 @@ function formatDuration(minutes: number) {
   return `${hours}h ${String(remainingMinutes).padStart(2, '0')}m`
 }
 
-export function ActivitySummary() {
+export function ActivitySummary({
+  activityRegisters,
+  onActivityChange,
+}: {
+  activityRegisters: ActivityRegister[]
+  onActivityChange: (
+    id: number,
+    previousName: string,
+    changes: Partial<Pick<ActivityRegister, 'name' | 'color'>>,
+  ) => void
+}) {
   const [activities, setActivities] = useState(initialActivities)
   const [openColorPickerId, setOpenColorPickerId] = useState<number | null>(null)
 
+  useEffect(() => {
+    if (activityRegisters.length > 0) {
+      setActivities(activityRegisters)
+    }
+  }, [activityRegisters])
+
   function updateActivityName(id: number, name: string) {
+    const previousName = activities.find((activity) => activity.id === id)?.name ?? ''
     setActivities((currentActivities) =>
       currentActivities.map((activity) =>
         activity.id === id ? { ...activity, name } : activity,
       ),
     )
+    onActivityChange(id, previousName, { name })
   }
 
   function updateActivityColor(id: number, color: string) {
+    const previousName = activities.find((activity) => activity.id === id)?.name ?? ''
     setActivities((currentActivities) =>
       currentActivities.map((activity) =>
         activity.id === id ? { ...activity, color } : activity,
       ),
     )
+    onActivityChange(id, previousName, { color })
   }
 
   return (

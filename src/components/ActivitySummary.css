@@ -44,7 +44,8 @@
   white-space: nowrap;
 }
 
-.activity-summary__table td:not(:first-child) {
+.activity-summary__duration {
+  font-family: var(--font-family-monospace);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

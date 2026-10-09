@@ -62,6 +62,7 @@
   padding-right: 10px;
   color: #e6e6e6;
   font-size: 12px;
+  font-family: var(--font-family-monospace);
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
@@ -111,6 +112,7 @@
 
 .week-calendar__event-time {
   margin-top: 2px;
+  font-family: var(--font-family-monospace);
   font-variant-numeric: tabular-nums;
 }
 

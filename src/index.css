@@ -1,6 +1,16 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
+
 :root {
-  font-family: 'Courier New', Courier, monospace;
-  font-synthesis: none;
+  --font-family: 'JetBrains Mono', monospace;
+  --font-family-monospace: 'JetBrains Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+
+  font-family: var(--font-family);
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;

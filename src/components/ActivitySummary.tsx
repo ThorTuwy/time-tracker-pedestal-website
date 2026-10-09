@@ -149,8 +149,8 @@ export function ActivitySummary({
                     )}
                   </div>
                 </td>
-                <td>{formatDuration(activity.thisWeekMinutes)}</td>
-                <td>{formatDuration(activity.thisMonthMinutes)}</td>
+                <td class="activity-summary__duration">{formatDuration(activity.thisWeekMinutes)}</td>
+                <td class="activity-summary__duration">{formatDuration(activity.thisMonthMinutes)}</td>
               </tr>
             ))}
           </tbody>

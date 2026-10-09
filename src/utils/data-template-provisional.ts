@@ -1,4 +1,4 @@
-import {type ActivityTrackRecord, WEEK_DAYS} from "../types/activity.ts";
+import {type ActivityRegister, type ActivityTrackRecord, WEEK_DAYS} from "../types/activity.ts";
 
 function dateAtTime(weekDay: typeof WEEK_DAYS[number], hour: number, minute = 0) {
     return new Date(2000, 0, 3 + WEEK_DAYS.indexOf(weekDay), hour, minute)
@@ -19,4 +19,24 @@ export const activities: ActivityTrackRecord[] = [
     { startTime: dateAtTime('Friday', 11), stopTime: dateAtTime('Friday', 12), activityName: 'Team sync', color: '#d69d55' },
     { startTime: dateAtTime('Saturday', 10), stopTime: dateAtTime('Saturday', 11, 30), activityName: 'Personal project', color: '#59d8cf' },
     { startTime: dateAtTime('Sunday', 16), stopTime: dateAtTime('Sunday', 17), activityName: 'Weekly review', color: '#bd91f5' },
+]
+
+const activityColors = [
+    '#56d879',
+    '#d69d55',
+    '#76a7ff',
+    '#d6c35b',
+    '#ef8295',
+    '#59d8cf',
+    '#bd91f5',
+    '#f27777',
+]
+
+export const initialActivities: ActivityRegister[] = [
+    { id: 1, name: 'Focus time', color: activityColors[0], thisWeekMinutes: 450, thisMonthMinutes: 1695 },
+    { id: 2, name: 'Team sync', color: activityColors[1], thisWeekMinutes: 150, thisMonthMinutes: 540 },
+    { id: 3, name: 'Project planning', color: activityColors[2], thisWeekMinutes: 240, thisMonthMinutes: 750 },
+    { id: 4, name: 'Design review', color: activityColors[3], thisWeekMinutes: 60, thisMonthMinutes: 330 },
+    { id: 5, name: 'Research', color: activityColors[4], thisWeekMinutes: 60, thisMonthMinutes: 360 },
+    { id: 6, name: 'Personal project', color: activityColors[5], thisWeekMinutes: 90, thisMonthMinutes: 270 },
 ]

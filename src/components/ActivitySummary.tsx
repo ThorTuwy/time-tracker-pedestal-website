@@ -4,26 +4,6 @@ import './ActivitySummary.css'
 import type { ActivityRegister } from '../types/activity.ts'
 import {serializeActivityNameRecords} from "../utils/serializer.ts";
 
-const activityColors = [
-  '#56d879',
-  '#d69d55',
-  '#76a7ff',
-  '#d6c35b',
-  '#ef8295',
-  '#59d8cf',
-  '#bd91f5',
-  '#f27777',
-]
-
-const initialActivities: ActivityRegister[] = [
-  { id: 1, name: 'Focus time', color: activityColors[0], thisWeekMinutes: 450, thisMonthMinutes: 1695 },
-  { id: 2, name: 'Team sync', color: activityColors[1], thisWeekMinutes: 150, thisMonthMinutes: 540 },
-  { id: 3, name: 'Project planning', color: activityColors[2], thisWeekMinutes: 240, thisMonthMinutes: 750 },
-  { id: 4, name: 'Design review', color: activityColors[3], thisWeekMinutes: 60, thisMonthMinutes: 330 },
-  { id: 5, name: 'Research', color: activityColors[4], thisWeekMinutes: 60, thisMonthMinutes: 360 },
-  { id: 6, name: 'Personal project', color: activityColors[5], thisWeekMinutes: 90, thisMonthMinutes: 270 },
-]
-
 function formatDuration(minutes: number) {
   const hours = Math.floor(minutes / 60)
   const remainingMinutes = minutes % 60
@@ -41,7 +21,7 @@ export function ActivitySummary({
     changes: Partial<Pick<ActivityRegister, 'name' | 'color'>>,
   ) => void
 }) {
-  const [activities, setActivities] = useState(initialActivities)
+  const [activities, setActivities] = useState<ActivityRegister[]>([])
   const [openColorPickerId, setOpenColorPickerId] = useState<number | null>(null)
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)

@@ -83,7 +83,7 @@ export function ActivitySummary({
     setOpenColorPickerId(null)
 
     try {
-      const response = await fetch(`${import.meta.env.BASE_URL}replaceRegister`, {
+      const response = await fetch(`${import.meta.env.BASE_URL}api/replaceRegister`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/octet-stream' },
         body: serializeActivityNameRecords(activities),

@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-  <a href="https://github.com/ThorTuwy/WallaReq">
+  <a href="https://github.com/ThorTuwy/time-tracker-pedestal">
     <img src="/public/logo-time-tracker-pedestal.svg" alt="Logo">
   </a>
 

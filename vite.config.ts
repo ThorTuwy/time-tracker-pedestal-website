@@ -9,7 +9,9 @@ export default defineConfig({
   plugins: [preact(),compression({
     algorithms: [
       'gzip',
-    ]
+    ],
+    deleteOriginalAssets: true,
+    threshold: 0,
   }),
     {
       name: 'serve-dev-only-files',
